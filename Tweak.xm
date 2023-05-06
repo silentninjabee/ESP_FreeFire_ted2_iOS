@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//declaring our utility functions
 int get_Health(void *_this){
   int (*hp)(void *instance) = (int (*)(void *))getRealOffset(0x1030ACDDC);
   return hp(_this);
@@ -58,8 +59,7 @@ Vector3 getPosition(void *component){
   return out;
 }
 
-
-
+//enemy esp information
 struct enemy_t {
     void *object;
     Vector3 location;
@@ -69,14 +69,15 @@ struct enemy_t {
     float distance;
 };
 
+//local player esp information
 struct me_t {
 	void *object;
 	Vector3 location;
 	int team;
 };
 
+//a pointer to me
 me_t *me;
-
 
 class EntityManager {
 public:
@@ -170,13 +171,9 @@ public:
 		}
 };
 
-
-
 static esp* es;
 EntityManager *entityManager = new EntityManager();
 int playerTeam = 0;
-
-
 
 void (*LateUpdate)(void* _this);
 void _LateUpdate(void* _this) 
@@ -211,9 +208,7 @@ UIWindow *main = [UIApplication sharedApplication].keyWindow;
             float xd2 = pow(me->location.Z - (*enemies)[i]->location.Z, 2);
             float dist = sqrt(xd + xd1 + xd2);
               (*enemies)[i]->distance = dist;
-            
-           
-              
+
                 if(!pplayers){
                   pplayers = new std::vector<player_t *>();
                 }
@@ -268,8 +263,6 @@ UIWindow *main = [UIApplication sharedApplication].keyWindow;
   LateUpdate(_this);
 }
 
-
-
 void (*Character$$Destroy)(void *_this);
 void _Character$$Destroy(void *_this){
 if(_this != NULL) {
@@ -278,18 +271,12 @@ if(_this != NULL) {
 Character$$Destroy(_this);
 }
 
-
-
 void setup(){
-
 me = new me_t();
 entityManager= new EntityManager();
 
 HOOK(0x1030A21BC, _LateUpdate, LateUpdate);
-
 HOOK(0x103077254, _Character$$Destroy, Character$$Destroy);
-
-
 
   [switches addSwitch:@"ESP"
               description:@"ESP"];
@@ -302,21 +289,15 @@ HOOK(0x103077254, _Character$$Destroy, Character$$Destroy);
               
   [switches addSwitch:@"ESP HEALTHBAR"
               description:@"ESP HEALTHBAR"];
-      
-
 }
 
-
-
 void setupMenu() {
-
-
 [menu setFrameworkName:NULL];
 menu = [[Menu alloc]              
-initWithTitle: @"Free Fire ESP 34306"
+initWithTitle: @"FREE FIRE by Silentninjabee"
 titleColor: [UIColor whiteColor]
 titleFont: @"San Francisco"
-credits: @"This Mod Menu has been made by 34306.\n\nEnjoy!"
+credits: @"This Mod Menu has been made by Silentninjabee.\n\nEnjoy!"
 headerColor: UIColorFromHex(0xADD8E6)
 switchOffColor: [UIColor colorWithRed: 0.00 green: 0.00 blue: 0.00 alpha: 0.30]
 switchOnColor: [UIColor colorWithRed: 0.00 green: 0.68 blue: 0.95 alpha: 1.00]
@@ -331,7 +312,6 @@ menuButton: @"iVBORw0KGgoAAAANSUhEUgAAADcAAAA3CAYAAACo29JGAAAACXBIWXMAAC4jAAAuIw
 
     setup();
 }
-
 
 static void didFinishLaunching(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef info) {
   timer(5) {
